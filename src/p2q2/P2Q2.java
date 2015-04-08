@@ -96,6 +96,9 @@ public class P2Q2 {
 		}
 		
 		Draw draw = new Draw(red,green,blue,height[0],width[0]);
+		
+		// TODO: need to draw other three images
+		// use red,green, blue to create buffered image using setRGB, then convert to tiff/compressed image?
 
 	}
 	
