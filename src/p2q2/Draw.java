@@ -25,8 +25,9 @@ public class Draw extends JFrame{
 	
 		this.setPreferredSize(new Dimension(width*1,height*1));
 		this.pack();
+		this.setLocationByPlatform(true);
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 	}
 	public void paint(Graphics g){

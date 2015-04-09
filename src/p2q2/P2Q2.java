@@ -48,7 +48,10 @@ public class P2Q2 {
 		}
 		
 		// set reds
-		int[][]red = new int[width[0]][height[0]];
+		int[][] red = new int[width[0]][height[0]];
+		int[][] red0 = new int[width[0]][height[0]];
+		int[][] red1 = new int[width[0]][height[0]];
+		int[][] red2 = new int[width[0]][height[0]];
 		
 		int[] k = new int[3];
 		for(int i=0;i<3;i++){
@@ -56,7 +59,10 @@ public class P2Q2 {
 		}
 		for (int i=0;i<height[0];i++){
 			for(int j=0;j<width[0];j++){
-				red[j][i]=(int)(((arrOfBytes[0][k[0]]&0xff)+(arrOfBytes[1][k[1]]&0xff)+(arrOfBytes[2][k[2]]&0xff))/3);;
+				red[j][i]=(int)(((arrOfBytes[0][k[0]]&0xff)+(arrOfBytes[1][k[1]]&0xff)+(arrOfBytes[2][k[2]]&0xff))/3);
+				red0[j][i]=(int)arrOfBytes[0][k[0]]&0xff;
+				red1[j][i]=(int)arrOfBytes[1][k[1]]&0xff;
+				red2[j][i]=(int)arrOfBytes[2][k[2]]&0xff;
 				k[0]+=3;
 				k[1]+=3;
 				k[2]+=3;
@@ -71,9 +77,16 @@ public class P2Q2 {
 			k[i]=firstPix[i]+1;
 		}
 		int[][]green = new int[width[0]][height[0]];
+		
+		int[][] green0 = new int[width[0]][height[0]];
+		int[][] green1 = new int[width[0]][height[0]];
+		int[][] green2 = new int[width[0]][height[0]];
 		for (int i=0;i<height[0];i++){
 			for(int j=0;j<width[0];j++){
 				green[j][i]=(int)(((arrOfBytes[0][k[0]]&0xff)+(arrOfBytes[1][k[1]]&0xff)+(arrOfBytes[2][k[2]]&0xff))/3);
+				green0[j][i]=(int)arrOfBytes[0][k[0]]&0xff;
+				green1[j][i]=(int)arrOfBytes[1][k[1]]&0xff;
+				green2[j][i]=(int)arrOfBytes[2][k[2]]&0xff;
 				k[0]+=3;
 				k[1]+=3;
 				k[2]+=3;
@@ -86,17 +99,28 @@ public class P2Q2 {
 			k[i]=firstPix[i]+2;
 		}
 		int[][] blue = new int[width[0]][height[0]];
+		int[][] blue0 = new int[width[0]][height[0]];
+		int[][] blue1 = new int[width[0]][height[0]];
+		int[][] blue2 = new int[width[0]][height[0]];
+		
+		
 		for (int i=0;i<height[0];i++){
 			for(int j=0;j<width[0];j++){
-				blue[j][i]=(int)(((arrOfBytes[0][k[0]]&0xff)+(arrOfBytes[1][k[1]]&0xff)+(arrOfBytes[2][k[2]]&0xff))/3);;
+				blue[j][i]=(int)(((arrOfBytes[0][k[0]]&0xff)+(arrOfBytes[1][k[1]]&0xff)+(arrOfBytes[2][k[2]]&0xff))/3);
+				blue0[j][i]=(int)arrOfBytes[0][k[0]]&0xff;
+				blue1[j][i]=(int)arrOfBytes[1][k[1]]&0xff;
+				blue2[j][i]=(int)arrOfBytes[2][k[2]]&0xff;
 				k[0]+=3;
 				k[1]+=3;
 				k[2]+=3;
 			}
 		}
-		
+		Draw draw0 = new Draw(red0,green0,blue0,height[0],width[0]);
+		Draw draw1 = new Draw(red1,green1,blue1,height[0],width[0]);
+		Draw draw2 = new Draw(red2,green2,blue2,height[0],width[0]);
 		Draw draw = new Draw(red,green,blue,height[0],width[0]);
 		
+		int[] data= new int[height[0]*width[0]];
 		// TODO: need to draw other three images
 		// use red,green, blue to create buffered image using setRGB, then convert to tiff/compressed image?
 
