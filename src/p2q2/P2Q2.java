@@ -1,13 +1,18 @@
 package p2q2;
 
+import java.awt.FlowLayout;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class P2Q2 {
 	static int[] firstPix = new int[3];
@@ -120,10 +125,32 @@ public class P2Q2 {
 		Draw draw2 = new Draw(red2,green2,blue2,height[0],width[0]);
 		Draw draw = new Draw(red,green,blue,height[0],width[0]);
 		
-		int[] data= new int[height[0]*width[0]];
+		byte[] data= new byte[height[0]*width[0]*3];
 		// TODO: need to draw other three images
 		// use red,green, blue to create buffered image using setRGB, then convert to tiff/compressed image?
+	
+		
+		
+		int i =0;
+		for(int y = 0;y<height[0];y++){
+			for(int x=0;x<width[0];x++){
+				System.out.print(red[x][y]+" ");
+				data[i++]= (byte) ((byte)red[x][y]&0xff);
+				System.out.println(data[i-1]);
+				
+				System.out.print(green[x][y]+" ");
+				data[i++]=(byte) ((byte) green[x][y]&0xff);
+				System.out.println(data[i-1]);
+				
+				System.out.print(blue[x][y]+" ");
+				data[i++]=(byte) ((byte) blue[x][y]&0xff);
+				System.out.println(data[i-1]);
+			}
+		}
+		
+		
 
+	
 	}
 	
 	static void getOffset(){
