@@ -1,18 +1,15 @@
 package p2q2;
 
-import java.awt.FlowLayout;
-import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.zip.Deflater;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 public class P2Q2 {
 	static int[] firstPix = new int[3];
@@ -23,6 +20,7 @@ public class P2Q2 {
 	static boolean[] little_endian = new boolean[3];
 	static int[] offset = new int[3];
 	static int[] byteOrder= new int[3];
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException{
 		File[] files = fileChooser();
 		String[] paths=new String[files.length];
@@ -120,37 +118,67 @@ public class P2Q2 {
 				k[2]+=3;
 			}
 		}
+		
 		Draw draw0 = new Draw(red0,green0,blue0,height[0],width[0]);
 		Draw draw1 = new Draw(red1,green1,blue1,height[0],width[0]);
 		Draw draw2 = new Draw(red2,green2,blue2,height[0],width[0]);
 		Draw draw = new Draw(red,green,blue,height[0],width[0]);
 		
-		byte[] data= new byte[height[0]*width[0]*3];
+		byte[] data= new byte[height[0]*width[0]*3+8];
 		// TODO: need to draw other three images
 		// use red,green, blue to create buffered image using setRGB, then convert to tiff/compressed image?
 	
-		
-		
-		int i =0;
+		int in=width[0];
+		data[3]=(byte) ((byte) in &0xff);
+		in>>=8;
+		data[2]=(byte) ((byte) in &0xff);
+		in>>=8;
+		data[1]=(byte) ((byte) in &0xff);
+		in>>=8;
+		data[0]=(byte) in ;
+		in>>=8;
+			
+			
+		in=height[0];
+		data[7]=(byte) ((byte) in &0xff);
+		in>>=8;
+		data[6]=(byte) ((byte) in &0xff);
+		in>>=8;
+		data[5]=(byte) ((byte) in &0xff);
+		in>>=8;
+		data[4]=(byte) in ;
+		in>>=8;
+			
+		System.out.println(data[3]);
+		int i =8;
 		for(int y = 0;y<height[0];y++){
 			for(int x=0;x<width[0];x++){
-				System.out.print(red[x][y]+" ");
+				
 				data[i++]= (byte) ((byte)red[x][y]&0xff);
-				System.out.println(data[i-1]);
-				
-				System.out.print(green[x][y]+" ");
+				//System.out.println(data[i-1]);
+
 				data[i++]=(byte) ((byte) green[x][y]&0xff);
-				System.out.println(data[i-1]);
-				
-				System.out.print(blue[x][y]+" ");
+				//System.out.println(data[i-1]);
+
 				data[i++]=(byte) ((byte) blue[x][y]&0xff);
-				System.out.println(data[i-1]);
+				//System.out.println(data[i-1]);
 			}
 		}
-		
-		
+		byte[] out = compress(data);
+		//System.out.println(data[3]);
+		writeToFile(out);
+
 
 	
+	}
+	public static void writeToFile(byte[] bytes) throws IOException{
+		FileOutputStream stream = new FileOutputStream("compressed.thr");
+		try{
+			stream.write(bytes);
+		} finally{
+			stream.close();
+		}
+
 	}
 	
 	static void getOffset(){
@@ -239,6 +267,7 @@ public class P2Q2 {
 		int dir=offset[pic]+2;
 		int numOfDir=getShort(pic,offset[pic]);
 		
+		@SuppressWarnings("unused")
 		int tag,type,count,val;
 
 		for(int i=0;i<numOfDir;i++) {
@@ -286,6 +315,29 @@ public class P2Q2 {
 		}
 	}
 
+	
+	
+	
+	    
+	  public static byte[] compress(byte[] data) throws IOException {  
+	   Deflater deflater = new Deflater();  
+	   deflater.setInput(data);  
+	   
+	   ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);   
+	       
+	   deflater.finish();  
+	   byte[] buffer = new byte[1024];   
+	   while (!deflater.finished()) {  
+	    int count = deflater.deflate(buffer); // returns the generated code... index  
+	    outputStream.write(buffer, 0, count);   
+	   }  
+	   outputStream.close();  
+	   byte[] output = outputStream.toByteArray();  
+	   
+	   deflater.end();
+
+	   return output;  
+	  }  
 	
 
 }
