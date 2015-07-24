@@ -1,0 +1,14 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#	modified:   .classpath
+#	modified:   .settings/org.eclipse.jdt.core.prefs
+#	modified:   bin/p2q2/Draw.class
+#	modified:   bin/p2q2/P2Q2.class
+#	new file:   bin/p2q2/RLC.class
+#	new file:   compressed.thr
+#	modified:   src/p2q2/P2Q2.java
+#
+
